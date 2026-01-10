@@ -15,8 +15,8 @@ Thank you for your interest in contributing to Worklin! This document provides g
 1. **Fork the repository**
    ```bash
    # Fork the repo on GitHub, then clone your fork
-   git clone https://github.com/your-username/worklin.git
-   cd worklin
+   git clone https://github.com/fyiclub-vitb/WorkLin.git
+   cd WorkLin
    ```
 
 2. **Install dependencies**

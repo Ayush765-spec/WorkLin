@@ -44,13 +44,13 @@ export const useWorkspace = () => {
   const initializeDefault = () => {
     const defaultPage: Page = {
       id: '1',
-      title: 'Welcome to Worklin',
+      title: 'Welcome to WorkLin',
       icon: '📝',
       blocks: [
-        { id: 'b1', type: 'heading1', text: 'Welcome to Worklin' },
-        { id: 'b2', type: 'paragraph', text: '✨ Start typing to create your first note...' },
-        { id: 'b3', type: 'paragraph', text: '📚 Click "New Page" in the sidebar to add more pages' },
-        { id: 'b4', type: 'bulleted-list', text: 'Supports headings, paragraphs, lists, and checklists' },
+        { id: 'b1', type: 'heading1', text: 'Welcome to WorkLin', content: 'Welcome to WorkLin', createdAt: new Date(), updatedAt: new Date() },
+        { id: 'b2', type: 'paragraph', text: '✨ Start typing to create your first note...', content: '✨ Start typing to create your first note...', createdAt: new Date(), updatedAt: new Date() },
+        { id: 'b3', type: 'paragraph', text: '📚 Click "New Page" in the sidebar to add more pages', content: '📚 Click "New Page" in the sidebar to add more pages', createdAt: new Date(), updatedAt: new Date() },
+        { id: 'b4', type: 'bulleted-list', text: 'Supports headings, paragraphs, lists, and checklists', content: 'Supports headings, paragraphs, lists, and checklists', createdAt: new Date(), updatedAt: new Date() },
       ],
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -106,7 +106,15 @@ export const useWorkspace = () => {
               ...p,
               blocks: [
                 ...p.blocks,
-                { id: Date.now().toString(), type, text: '', checked: false },
+                { 
+                  id: Date.now().toString(), 
+                  type, 
+                  text: '', 
+                  content: '',
+                  checked: false,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                },
               ],
               updatedAt: new Date(),
             }

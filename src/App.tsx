@@ -1,49 +1,21 @@
 import React from 'react';
-import { Sidebar } from './components/Sidebar';
-import { PageEditor } from './components/PageEditor';
-import { useWorkspace } from './hooks/useWorkspace';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Landing } from './pages/Landing';
+import { Login } from './pages/Login';
+import { Workspace } from './pages/Workspace';
+import { Toaster } from './components/ui/toaster';
 
 function App() {
-  const {
-    workspace,
-    currentPage,
-    currentPageId,
-    setCurrentPageId,
-    addPage,
-    deletePage,
-    updatePageTitle,
-    addBlock,
-    updateBlock,
-    deleteBlock,
-  } = useWorkspace();
-
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar
-        pages={workspace.pages}
-        currentPageId={currentPageId}
-        onSelectPage={setCurrentPageId}
-        onAddPage={() => addPage()}
-        onDeletePage={(pageId) => {
-          if (confirm('Are you sure you want to delete this page?')) {
-            deletePage(pageId);
-          }
-        }}
-      />
-      <PageEditor
-        page={currentPage}
-        onAddBlock={(type) => currentPageId && addBlock(currentPageId, type)}
-        onUpdateBlock={(blockId, updates) =>
-          currentPageId && updateBlock(currentPageId, blockId, updates)
-        }
-        onDeleteBlock={(blockId) =>
-          currentPageId && deleteBlock(currentPageId, blockId)
-        }
-        onUpdatePageTitle={(title) =>
-          currentPageId && updatePageTitle(currentPageId, title)
-        }
-      />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/app" element={<Workspace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <Toaster />
+    </BrowserRouter>
   );
 }
 
