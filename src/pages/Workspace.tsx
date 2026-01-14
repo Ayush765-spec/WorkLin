@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Sidebar } from '../components/Sidebar';
 import { PageEditor } from '../components/PageEditor';
+import { AdvancedSearch } from '../components/search/AdvancedSearch';
 import { useWorkspace } from '../hooks/useWorkspace';
 import { Menu } from 'lucide-react';
 import { Toaster } from '../components/ui/toaster';
 
 export const Workspace: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isSearchView = location.pathname === '/app/search';
   const {
     workspace,
     currentPage,
@@ -83,22 +86,28 @@ export const Workspace: React.FC = () => {
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
-      <PageEditor
-        page={currentPage}
-        onAddBlock={(type) => currentPageId && addBlock(currentPageId, type)}
-        onUpdateBlock={(blockId, updates) =>
-          currentPageId && updateBlock(currentPageId, blockId, updates)
-        }
-        onDeleteBlock={(blockId) =>
-          currentPageId && deleteBlock(currentPageId, blockId)
-        }
-        onUpdatePageTitle={(title) =>
-          currentPageId && updatePageTitle(currentPageId, title)
-        }
-        onUpdatePageCover={(url) => 
-          currentPageId && updatePageCover(currentPageId, url)
-        }
-      />
+      {isSearchView ? (
+        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-[#1e1e1e] p-8">
+          <AdvancedSearch />
+        </div>
+      ) : (
+        <PageEditor
+          page={currentPage}
+          onAddBlock={(type) => currentPageId && addBlock(currentPageId, type)}
+          onUpdateBlock={(blockId, updates) =>
+            currentPageId && updateBlock(currentPageId, blockId, updates)
+          }
+          onDeleteBlock={(blockId) =>
+            currentPageId && deleteBlock(currentPageId, blockId)
+          }
+          onUpdatePageTitle={(title) =>
+            currentPageId && updatePageTitle(currentPageId, title)
+          }
+          onUpdatePageCover={(url) =>
+            currentPageId && updatePageCover(currentPageId, url)
+          }
+        />
+      )}
       <Toaster />
     </div>
   );

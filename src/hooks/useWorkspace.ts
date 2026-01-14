@@ -77,7 +77,7 @@ export const useWorkspace = () => {
       updatedAt: new Date(),
     };
 
-    // FIX 3: Set a full Workspace object
+    // ... inside initializeDefault
     const defaultWorkspace: Workspace = {
       id: 'ws-default',
       name: 'My Workspace',
@@ -87,6 +87,11 @@ export const useWorkspace = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
+    // Auto-seed block removed as per user request
+    if (localStorage.getItem('worklin_local_seeded')) {
+      localStorage.removeItem('worklin_local_seeded');
+    }
 
     setWorkspace(defaultWorkspace);
     setCurrentPageId('1');

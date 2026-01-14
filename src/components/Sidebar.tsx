@@ -1,5 +1,6 @@
 import React from 'react';
 import { Plus, Search, Settings, X, FileText, Home, Star, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Page } from '../types/workspace';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePageSearch } from '../hooks/use-page-search';
@@ -19,14 +20,14 @@ const HighlightedText = ({ text, highlight }: { text: string; highlight: string 
   if (!highlight.trim()) {
     return <span className="truncate">{text}</span>;
   }
-  
+
   // Escape regex special characters
   const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const parts = text.split(new RegExp(`(${escapedHighlight})`, 'gi'));
 
   return (
     <span className="truncate">
-      {parts.map((part, i) => 
+      {parts.map((part, i) =>
         part.toLowerCase() === highlight.toLowerCase() ? (
           <span key={i} className="bg-yellow-200 dark:bg-yellow-900/50 text-gray-900 dark:text-gray-100 rounded-[2px] px-0.5">{part}</span>
         ) : (
@@ -46,6 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   sidebarOpen,
   setSidebarOpen,
 }) => {
+  const navigate = useNavigate(); // Import this
   const { searchQuery, setSearchQuery, filteredPages, inputRef } = usePageSearch(pages);
 
   return (
@@ -97,7 +99,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <Plus size={16} className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400" />
             <span>New Page</span>
           </button>
-          <button 
+          <button
             onClick={() => inputRef.current?.focus()}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
           >
@@ -133,6 +135,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <Star size={16} />
               <span>Favorites</span>
             </button>
+            <button
+              onClick={() => navigate('/app/search')}
+              className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+            >
+              <Search size={16} />
+              <span>Advanced Search</span>
+            </button>
           </div>
         </div>
 
@@ -163,11 +172,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <motion.div
                     key={page.id}
                     whileHover={{ x: 2 }}
-                    className={`group flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-colors ${
-                      currentPageId === page.id
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                    }`}
+                    className={`group flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-colors ${currentPageId === page.id
+                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      }`}
                     onClick={() => onSelectPage(page.id)}
                   >
                     <span className="text-base flex-shrink-0">{page.icon}</span>
