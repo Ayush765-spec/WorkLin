@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, Search, Settings, X, FileText, Home, Star, Trash2, Moon, Sun } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Page } from '../types/workspace';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// 1. Import the hook
 import { useToast } from '../hooks/use-toast';
-
 import { useDarkMode } from '../hooks/useDarkMode';
 import { IconPicker } from './ui/icon-picker';
 import { usePageSearch } from '../hooks/use-page-search';
-
 
 interface SidebarProps {
   pages: Page[];
@@ -28,7 +25,6 @@ const HighlightedText = ({ text, highlight }: { text: string; highlight: string 
     return <span className="truncate">{text}</span>;
   }
 
-  // Escape regex special characters
   const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const parts = text.split(new RegExp(`(${escapedHighlight})`, 'gi'));
   return (
@@ -54,21 +50,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   sidebarOpen,
   setSidebarOpen,
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  // 2. Initialize the toast
   const { toast } = useToast();
-
-  const filteredPages = pages.filter((page) =>
-    page.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const { isDark, toggleDarkMode } = useDarkMode();
-  // Using the hook to manage search state and results
   const { searchQuery, setSearchQuery, filteredPages, inputRef } = usePageSearch(pages);
-
-
-  // --- Wrapper Functions for Toasts ---
+  const navigate = useNavigate();
 
   const handleAddPage = () => {
     onAddPage();
@@ -85,20 +70,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
       title: "Page deleted",
       description: "The page has been moved to trash.",
       duration: 3000,
-      variant: "destructive", // Using destructive variant for delete actions
+      variant: "destructive",
     });
   };
 
   const handleSettings = () => {
-    // Example of a "Workspace Action" toast
     toast({
       title: "Settings",
       description: "Workspace settings are coming soon.",
       duration: 3000,
     });
   };
-
-  // ------------------------------------
 
   return (
     <>
@@ -137,8 +119,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
             onClick={handleAddPage}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors group"
           >
-          <button onClick={onAddPage} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors group">
-
             <Plus size={16} className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400" />
             <span>New Page</span>
           </button>
@@ -166,7 +146,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Navigation - PRESERVED FROM HEAD */}
+        {/* Navigation */}
         <div className="px-2 pb-2">
           <div className="space-y-0.5">
             <button className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors">
@@ -201,8 +181,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onClick={handleAddPage}
                     className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
                   >
-
-                  <button onClick={onAddPage} className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
                     Create your first page
                   </button>
                 )}
@@ -248,19 +226,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gray-200 dark:border-gray-800 p-2">
-          <button 
-            onClick={handleSettings}
+        <div className="border-t border-gray-200 dark:border-gray-800 p-2 space-y-1">
+          <button
+            onClick={toggleDarkMode}
             className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
           >
-
-        <div className="border-t border-gray-200 dark:border-gray-800 p-2 space-y-1">
-          <button onClick={toggleDarkMode} className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors">
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
             <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
-          <button className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors">
 
+          <button
+            onClick={handleSettings}
+            className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+          >
             <Settings size={16} />
             <span>Settings</span>
           </button>
