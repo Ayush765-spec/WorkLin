@@ -144,6 +144,28 @@ For real-time collaboration features, deploy the Yjs server on Render (free tier
 
 See [YJS_SERVER_SETUP.md](YJS_SERVER_SETUP.md) for detailed setup instructions.
 
+#### 4. Google Gemini API Setup (Optional - For AI Features)
+
+WorkLin includes AI writing assistance powered by Google Gemini.
+
+1. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Add to your root `.env` file:
+   ```env
+   VITE_GEMINI_API_KEY=your-gemini-api-key
+   ```
+3. Restart your dev server if running:
+   ```bash
+   npm run dev
+   ```
+
+**Rate Limits**: 15 requests per minute per user (client-side rate limiting)
+
+**Free Tier**: 60 RPM, 1,500 requests/day - No credit card required!
+
+**Note**: The API key is used directly in the frontend. For production, set `VITE_GEMINI_API_KEY` in your hosting platform's environment variables (Vercel, Netlify, etc.).
+
+See [GEMINI_API_SETUP.md](GEMINI_API_SETUP.md) for detailed setup instructions.
+
 ## 📦 Available Scripts
 
 ```bash

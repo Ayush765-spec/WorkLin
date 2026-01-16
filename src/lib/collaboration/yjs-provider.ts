@@ -27,8 +27,8 @@ export const createYjsProvider = (pageId: string) => {
       }
     });
 
-    provider.on('connection-error', (error: Error) => {
-      console.error('Yjs WebSocket connection error:', error);
+    provider.on('connection-error', (event: Event, provider: WebsocketProvider) => {
+      console.error('Yjs WebSocket connection error:', event);
     });
 
     return { doc, provider };
