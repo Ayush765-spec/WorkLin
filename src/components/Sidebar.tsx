@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Plus, Search, Settings, X, FileText, Home, Star, Trash2, Moon, Sun } from 'lucide-react';
+import { 
+  Plus, 
+  Search, 
+  Settings, 
+  X, 
+  FileText, 
+  Home, 
+  Star, 
+  Trash2, 
+  Moon, 
+  Sun,
+  BarChart2 // Added for Analytics icon
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Page } from '../types/workspace';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -149,7 +161,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Navigation */}
         <div className="px-2 pb-2">
           <div className="space-y-0.5">
-            <button className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors">
+            <button 
+              onClick={() => navigate('/app')}
+              className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+            >
               <Home size={16} />
               <span>Home</span>
             </button>
@@ -164,6 +179,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <Search size={16} />
               <span>Advanced Search</span>
             </button>
+
+            <button
+              onClick={() => navigate('/app/analytics')}
+              className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+            >
+              <BarChart2 size={16} />
+              <span>Analytics</span>
+            </button>
+
           </div>
         </div>
 
