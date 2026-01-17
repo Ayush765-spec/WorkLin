@@ -75,7 +75,11 @@ export const Workspace: React.FC = () => {
         pages={workspace.pages}
         currentPageId={currentPageId}
         onSelectPage={setCurrentPageId}
-        onAddPage={() => addPage()}
+        onAddPage={(template) => addPage(
+          template?.content.title || undefined,
+          template?.icon || undefined,
+          template?.content.blocks
+        )}
         onDeletePage={(pageId) => {
           if (confirm('Are you sure you want to delete this page?')) {
             deletePage(pageId);
@@ -97,7 +101,7 @@ export const Workspace: React.FC = () => {
             <>
               <div className="max-w-4xl mx-auto px-12 md:px-24 pt-12 pb-2">
                 <PageHeader
-                  pageId={currentPage.id}
+                  page={currentPage}
                   initialTitle={currentPage.title}
                   onDelete={() => deletePage(currentPage.id)}
                 />

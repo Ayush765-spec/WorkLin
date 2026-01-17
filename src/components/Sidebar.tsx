@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Plus, Search, Settings, X, FileText, Home, Star, Trash2, Moon, Sun } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Page } from '../types/workspace';
+import { Template } from '../types/template';
+import { TemplateGallery } from './templates/TemplateGallery';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { useToast } from '../hooks/use-toast';
@@ -13,7 +15,7 @@ interface SidebarProps {
   pages: Page[];
   currentPageId: string | null;
   onSelectPage: (pageId: string) => void;
-  onAddPage: () => void;
+  onAddPage: (template?: Template) => void;
   onDeletePage: (pageId: string) => void;
   onUpdatePage?: (pageId: string, newIcon: string) => void;
   sidebarOpen: boolean;
@@ -54,12 +56,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const { isDark, toggleDarkMode } = useDarkMode();
   const { searchQuery, setSearchQuery, filteredPages, inputRef } = usePageSearch(pages);
   const navigate = useNavigate();
+  const [showTemplates, setShowTemplates] = useState(false);
 
-  const handleAddPage = () => {
-    onAddPage();
+  const handleCreatePage = (template?: Template) => {
+    onAddPage(template);
+    setShowTemplates(false);
     toast({
       title: "Page created",
-      description: "A new page has been added to your workspace.",
+      description: template && template.id !== 'blank' ? `Created from ${template.name}` : "A new page has been added to your workspace.",
       duration: 3000,
     });
   };
@@ -116,7 +120,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="p-2 space-y-1">
           <button
-            onClick={handleAddPage}
+            onClick={() => setShowTemplates(true)}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors group"
           >
             <Plus size={16} className="text-gray-500 group-hover:text-gray-700 dark:text-gray-400" />
@@ -178,7 +182,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <p className="text-sm text-gray-400 dark:text-gray-500">{searchQuery ? 'No pages found' : 'No pages yet'}</p>
                 {!searchQuery && (
                   <button
-                    onClick={handleAddPage}
+                    onClick={() => setShowTemplates(true)}
                     className="mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline"
                   >
                     Create your first page
@@ -244,6 +248,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
       </motion.aside>
+
+
+      <TemplateGallery
+        isOpen={showTemplates}
+        onClose={() => setShowTemplates(false)}
+        onSelectTemplate={handleCreatePage}
+      />
     </>
   );
 };
