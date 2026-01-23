@@ -12,6 +12,7 @@ import { CollaborationProvider } from './collaboration/CollaborationProvider';
 import { useToast } from '../hooks/use-toast';
 import { ExportMenu } from "./page/ExportMenu";
 import { VersionHistory } from "./VersionHistory";
+import { EmptyState } from './ui/empty-state';
 import { TableView } from './views/TableView';
 import { BoardView } from './views/BoardView';
 import { CalendarView } from './views/CalendarView';
@@ -370,9 +371,13 @@ export const PageEditor: React.FC<PageEditorProps> = ({
                 // Default Block Editor
                 <>
                   {page.blocks.length === 0 ? (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
+                    <EmptyState
+                      title="Start writing"
+                      description="Add your first block or type / for commands."
+                      actionLabel="Add block"
+                      onAction={() => handleAddBlock('paragraph')}
+                      icon={<Plus size={24} />}
+                      inverted={!!page.cover}
                       className="py-8 sm:py-12"
                     >
                       <div className="text-center mb-6 sm:mb-8">
